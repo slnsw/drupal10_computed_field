@@ -5,4 +5,3 @@ core = 6.x
 dependencies[] = content
 package = CCK
 
-; version added by drupal.org packaging script on 2006-11-27
