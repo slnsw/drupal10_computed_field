@@ -95,7 +95,13 @@ function computed_field_field_settings($op, $field) {
     case 'database columns':
       if ($field['store']) {
         $columns = array('value' => array());
-        $columns['value']['type'] = isset($field['data_type']) ? $field['data_type'] : 'varchar';
+        if ($field['data_type'] == 'longtext') {
+          $columns['value']['type'] = 'text';
+          $columns['value']['size'] = 'big';
+        }
+        else {
+          $columns['value']['type'] = isset($field['data_type']) ? $field['data_type'] : 'varchar';
+        }
         // text and longtext should not have a length, so we ignore it
         if (!($field['data_type'] == 'text' || $field['data_type'] == 'longtext')) {
           $columns['value']['length'] = isset($field['data_length']) ? $field['data_length'] : 32;
@@ -151,6 +157,12 @@ function computed_field_field($op, &$node, $field, &$node_field, $teaser, $page)
         return array($field['field_name'] => $node_field);
       }
       break;
+    case 'sanitize':
+      // compute field for node previews
+      if ($node->build_mode == NODE_BUILD_PREVIEW) {
+        _computed_field_compute_value($node, $field, $node_field);
+      }
+      break;
     case 'view':
       if ($field['display']) {
         $items = array();
@@ -185,20 +197,16 @@ function computed_field_widget_info() {
 /**
  * Implementation of cck hook_widget()
  */
-function computed_field_widget($op, &$node, $field, &$node_field) {
-  switch ($op) {
-    case 'form':
-      $form = array();
-
-      $form[$field['field_name']] = array('#tree' => TRUE);
-
-      $form[$field['field_name']][0]['value'] = array(
-        '#type' => 'value',
-        '#title' => t($field['widget']['label']),
-        '#default_value' => isset($node_field[0]['value']) ? $node_field[0]['value'] : '',
-      );
-      return $form;
+function computed_field_widget(&$form, &$form_state, $field, $items, $delta = 0) {
+  $elements = array();
+  foreach($items as $delta => $item) {
+    $elements[$delta]['value'] = array (
+      '#type' => 'value',
+      '#tree' => TRUE,
+      '#default_value' => isset($item['value']) ? $item['value'] : NULL,
+    );
   }
+  return $elements;
 }
 
 /**
