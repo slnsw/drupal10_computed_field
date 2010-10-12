@@ -346,7 +346,7 @@ function computed_field_token_info() {
 /**
  * Implements hook_tokens().
  */
-function computed_field_tokens($type, $tokens, array $data = array(), array $options = array()) { msg('RUNNING TOKENS');
+function computed_field_tokens($type, $tokens, array $data = array(), array $options = array()) {
   $replacements = array();
   $sanitize = !empty($options['sanitize']);
   $lang = $options['language']->language;
