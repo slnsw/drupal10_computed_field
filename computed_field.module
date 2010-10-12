@@ -78,7 +78,7 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
   }
   $form['store'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Store using the database settings below:'),
+    '#title' => t('Store using the database settings below (required for Views use):'),
     '#default_value' => is_numeric($settings['store']) ? $settings['store'] : 1 ,
     '#disabled' => $has_data,
   );
