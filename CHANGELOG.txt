@@ -1,3 +1,7 @@
+8th October 2010
+----------------------------------------------------------------
+* Initial port to Drupal 7 using new Field API
+
 15th May 2007
 ----------------------------------------------------------------
 * Added a longtext option when storing to database, and fixed validation when

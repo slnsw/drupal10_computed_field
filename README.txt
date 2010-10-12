@@ -8,7 +8,7 @@ available to drupal, including other fields, the current user, database
 tables, etc. The drawback of this is of course that you need to know some php
 to use it.
 
-Computed Field requires the content module (cck).
+Computed Field requires the field module.
 
 -------------------------Update-------------------------------
 
@@ -22,11 +22,11 @@ $node_field_item['value'];'
 
 ----------Getting Started-----------------------------------
 
-Before you can use Computed Field, you'll need to get CCK and enable (at the
-very least) the 'content' module. You will probably also want to enable the
-other cck modules, such as 'text', 'number', 'date', etc.
+Before you can use Computed Field, you'll enable the field module.
+You will probably also want to enable the
+other field modules, such as 'text', 'number', 'date', etc.
 
-To add a computed field to a content type, go to administer > content >
+To add a computed field to a content type, go to administer > structure >
 content types, select the content type you want to add to, and click on the
 'add field' tab. One of the field types available should be 'Computed', and it
 should have one bullet point under it, also labelled 'Computed'. If you select
