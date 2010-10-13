@@ -303,7 +303,8 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
  * Implements field hook_field_is_empty().
  */
 function computed_field_field_is_empty($item, $field) {
-  if ($field['data_type'] == 'int' || $field['data_type'] == 'float') {
+  $data_type = $field['settings']['database']['data_type'];
+  if ($data_type == 'int' || $data_type == 'float') {
     return !is_numeric($item['value']);
   }
   return empty($item['value']);
