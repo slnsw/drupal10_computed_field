@@ -1,4 +1,3 @@
-# $Id$
 #
 # German translation of Drupal (general)
 # Copyright 2008 <dvc@drupalcenter.de>

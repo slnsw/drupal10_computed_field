@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * Implements field hook_field_info().

@@ -1,4 +1,3 @@
-; $Id$
 name = Computed Field
 description = Defines a field type that allows values to be "computed" via PHP code.
 core = 7.x
