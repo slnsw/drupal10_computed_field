@@ -159,7 +159,7 @@ function computed_field_field_load($entity_type, $entities, $field, $instances, 
   // Compute field values on load if they aren't stored in the database
   if (!$settings['store']) {
     foreach ($entities as $etid => $entity) {
-      _computed_field_compute_value($entity_type, $entity, $field, $instances, $langcode, &$items[$etid]);
+      _computed_field_compute_value($entity_type, $entity, $field, $instances, $langcode, $items[$etid]);
     }
   }
 }
@@ -171,7 +171,7 @@ function computed_field_field_prepare_view($entity_type, $entities, $field, $ins
   // Compute field values in case user is "previewing" an entity
   foreach ($entities as $etid => $entity) {
     if (isset($entity->op) && $entity->op == 'Preview') {
-      _computed_field_compute_value($entity_type, $entity, $field, $instances, $langcode, &$items[$etid]);
+      _computed_field_compute_value($entity_type, $entity, $field, $instances, $langcode, $items[$etid]);
     }
   }
 }
@@ -180,7 +180,7 @@ function computed_field_field_prepare_view($entity_type, $entities, $field, $ins
  * Implements field hook_field_presave().
  */
 function computed_field_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
-  _computed_field_compute_value($entity_type, $entity, $field, $instance, $langcode, &$items);
+  _computed_field_compute_value($entity_type, $entity, $field, $instance, $langcode, $items);
 }
 
 /**
@@ -319,6 +319,8 @@ function computed_field_token_info() {
     'needs-data' => 'node',
   );
   $fields = field_info_fields();
+  $node = array();
+  $computed = array();
   foreach ($fields as $field_name => $field) {
     if ($field['module'] == "computed_field") {
 
