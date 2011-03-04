@@ -48,7 +48,7 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
         '@entity_field_multi' => '$entity_field[1][\'value\']',
         '@field_a' => 'field_a',
         '@field_b' => 'field_b',
-        '@example' => '$entity_field[0][\'value\'] = $entity->field_a[\'und\'][0][\'value\'] + $entity->field_b[\'und\'][0][\'value\'];',
+        '@example' => '$entity_field[0][\'value\'] = $entity->field_a[LANGUAGE_NONE][0][\'value\'] + $entity->field_b[LANGUAGE_NONE][0][\'value\'];',
         '@compute_func' => $compute_func)),
     '#default_value' => !empty($settings['code']) ? $settings['code'] : '$entity_field[0][\'value\'] = "";',
     '#access' => !function_exists($compute_func),
@@ -271,7 +271,7 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
     
     // Setup a variable with the entity language if available
     if (isset($entity->language)) $entity_lang = $entity->language;
-    else $entity_lang = 'und';
+    else $entity_lang = LANGUAGE_NONE;
 
     // Execute the display code
     $display_output = NULL;
@@ -348,7 +348,7 @@ function computed_field_tokens($type, $tokens, array $data = array(), array $opt
   $computed_fields = array();
   $replacements = array();
   $sanitize = !empty($options['sanitize']);
-  $lang = $options['language']->language;
+  $lang = isset($options['language']->language) ? $options['language']->language : LANGUAGE_NONE;
   $fields = field_info_fields();
   foreach ($fields as $field_name => $field) {
     if ($field['module'] == "computed_field") {
@@ -391,7 +391,7 @@ function _computed_field_compute_value($entity_type, $entity, $field, $instance,
   
   // Setup a variable with the entity language if available
   if (isset($entity->language)) $entity_lang = $entity->language;
-  else $entity_lang = 'und';
+  else $entity_lang = LANGUAGE_NONE;
   
   // Allow the value to be computed from code not stored in DB
   $compute_func = 'computed_field_' . $field['field_name'] . '_compute';
