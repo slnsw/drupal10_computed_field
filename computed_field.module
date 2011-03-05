@@ -177,9 +177,16 @@ function computed_field_field_prepare_view($entity_type, $entities, $field, $ins
 }
 
 /**
- * Implements field hook_field_presave().
+ * Implements field hook_field_insert().
  */
-function computed_field_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+function computed_field_field_insert($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  _computed_field_compute_value($entity_type, $entity, $field, $instance, $langcode, $items);
+}
+
+/**
+ * Implements field hook_field_update().
+ */
+function computed_field_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
   _computed_field_compute_value($entity_type, $entity, $field, $instance, $langcode, $items);
 }
 
