@@ -94,15 +94,15 @@ $display_output = '$' . $entity_field_item['value'];
 
 - Check 'Store using the database settings below'
 
-- Data Type: float
+- Data Type: decimal
 
-- Data Length: 10,2
+- Decimal Length: 10
+
+- Decimal Precision: 2
 
 - Default Value: 0.00
 
 - Check 'Not NULL'
-
-- Check 'Sortable'
 
 
 Calculating a Duration given a start and end time
