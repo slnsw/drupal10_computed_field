@@ -166,7 +166,7 @@ function computed_field_field_settings_form_validate($element, &$form_state) {
     if (empty($settings['database']['data_type'])) {
       form_set_error('field][settings][data_type', t('To store this field in the database, please specify a data type.'));
     }
-    if (!($settings['database']['data_type'] == 'text' || $settings['database']['data_type'] == 'longtext') && (empty($settings['database']['data_length']) || !is_numeric(str_replace(',', '', $settings['database']['data_length'])))) {
+    if (($settings['database']['data_type'] == 'text' || $settings['database']['data_type'] == 'varchar') && empty($settings['database']['data_length'])) {
       form_set_error('field][settings][database][data_length', t('To store this field in the database, please specify the data length.'));
     }
     if (($settings['database']['data_type'] == 'int' || $settings['database']['data_type'] == 'float') && (!empty($settings['database']['data_default']) && !is_numeric($settings['database']['data_default']))) {
