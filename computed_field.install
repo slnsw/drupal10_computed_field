@@ -24,7 +24,7 @@ function computed_field_field_schema($field) {
       if (!($settings['database']['data_type'] == 'text' || $settings['database']['data_type'] == 'longtext')) {
         $columns['value']['length'] = isset($settings['database']['data_length']) ? $settings['database']['data_length'] : 32;
       }
-      $columns['value']['not NULL'] = isset($settings['database']['data_not_NULL']) ? $settings['database']['data_not_NULL'] : TRUE;
+      $columns['value']['not null'] = isset($settings['database']['data_not_NULL']) ? $settings['database']['data_not_NULL'] : TRUE;
       $columns['value']['sortable'] = isset($settings['database']['data_sortable']) ? $settings['database']['data_sortable'] : FALSE;
       if ($settings['database']['data_default'] != '')  {
         $columns['value']['default'] = $settings['database']['data_default'];
