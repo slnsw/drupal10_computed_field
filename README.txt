@@ -77,10 +77,10 @@ Adding two other fields
 ----------------------- 
 
 Imagine you have two existing number fields named field_product_price and
-field_postage_price. You want to create a computed field (field_total_cost)
-which adds these two fields. Create a new computed field with the name
-field_total_cost, and in your computed field's configuration set the 
-following:
+field_postage_price. Both are required fields, and you want to create a 
+computed field (field_total_cost) which adds these two fields. Create a 
+new computed field with the name field_total_cost, and in your computed 
+field's configuration set the following:
 
 - Computed Code (PHP):
 
