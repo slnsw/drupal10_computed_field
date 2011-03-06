@@ -259,6 +259,7 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
   // Special case formatter that returns the raw computed values without any display code processing
   if ($display['type'] == "computed_field_computed_value") {
     foreach ($items as $delta => $item) {
+      if (!isset($entity_field_item['value'])) $entity_field_item['value'] = NULL;
       $element[$delta] = array('#markup' => $item['value']);
     }
     return $element;
@@ -279,6 +280,10 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
     // Setup a variable with the entity language if available
     if (isset($entity->language)) $entity_lang = $entity->language;
     else $entity_lang = LANGUAGE_NONE;
+
+    // If there are value "holes" in the field array let's set the value to NULL
+    // to avoid undefined index errors in typical PHP display code
+    if (!isset($entity_field_item['value'])) $entity_field_item['value'] = NULL;
 
     // Execute the display code
     $display_output = NULL;
