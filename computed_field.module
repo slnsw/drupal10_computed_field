@@ -15,9 +15,11 @@ function computed_field_field_info() {
         'database' => array(
           'data_type' => 'varchar',
           'data_length' => 32,
+          'data_size' => 'normal',
+          'data_precision' => 10,
+          'data_scale' => 2,
           'data_not_NULL' => FALSE,
           'data_default' => NULL,
-          'data_sortable' => TRUE,
           'data_index' => FALSE,
         ),
       ),
@@ -94,14 +96,42 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
     '#title' => t('Data Type'),
     '#description' => t('The SQL datatype to store this field in.'),
     '#default_value' => !empty($settings['database']['data_type']) ? $settings['database']['data_type'] : 'varchar',
-    '#options' => array('int' => 'int', 'float' => 'float', 'varchar' => 'varchar', 'text' => 'text', 'longtext' => 'longtext'),
+    '#options' => array('varchar' => 'varchar', 'text' => 'text', 'longtext' => 'longtext', 'int' => 'int', 'float' => 'float', 'numeric' => 'decimal'),
     '#required' => FALSE,
     '#disabled' => $has_data,
   );
   $form['database']['data_length'] = array(
     '#type' => 'textfield',
-    '#title' => t('Data Length'),
-    '#default_value' => !empty($settings['database']['data_length']) ? $settings['database']['data_length'] : NULL,
+    '#title' => t('Data Length (varchar/text)'),
+    '#description' => t('<strong>Only</strong> valid for <strong>varchar</strong> or <strong>text</strong> fields. The length of the field stored in the database.'),
+    '#default_value' => !empty($settings['database']['data_length']) ? $settings['database']['data_length'] : 32,
+    '#required' => FALSE,
+    '#disabled' => $has_data,
+  );
+  $form['database']['data_size'] = array(
+    '#type' => 'select',
+    '#title' => t('Data Size (int/float)'),
+    '#description' => t('<strong>Only</strong> valid for <strong>int</strong> or <strong>float</strong> fields. The size of the field stored in the database.'),
+    '#default_value' => !empty($settings['database']['data_size']) ? $settings['database']['data_size'] : 'normal',
+    '#options' => array('tiny' => 'tiny', 'small' => 'small', 'medium' => 'medium', 'normal' => 'normal', 'big' => 'big'),
+    '#required' => FALSE,
+    '#disabled' => $has_data,
+  );
+  $form['database']['data_precision'] = array(
+    '#type' => 'select',
+    '#title' => t('Decimal Precision (decimal)'),
+    '#description' => t('<strong>Only</strong> valid for <strong>decimal</strong> fields. The total number of digits to store in the database, including those to the right of the decimal.'),
+    '#options' => drupal_map_assoc(range(10, 32)),
+    '#default_value' => !empty($settings['database']['data_precision']) ? $settings['database']['data_precision'] : 10,
+    '#required' => FALSE,
+    '#disabled' => $has_data,
+  );
+  $form['database']['data_scale'] = array(
+    '#type' => 'select',
+    '#title' => t('Decimal Scale (decimal)'),
+    '#description' => t('<strong>Only</strong> valid for <strong>decimal</strong> fields. The number of digits to the right of the decimal. '),
+    '#options' => drupal_map_assoc(range(0, 10)),
+    '#default_value' => !empty($settings['database']['data_scale']) ? $settings['database']['data_scale'] : 2,
     '#required' => FALSE,
     '#disabled' => $has_data,
   );
@@ -118,15 +148,9 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
     '#default_value' => is_numeric($settings['database']['data_not_NULL']) ? $settings['database']['data_not_NULL'] : FALSE,
     '#disabled' => $has_data,
   );
-  $form['database']['data_sortable'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Sortable'),
-    '#default_value' => is_numeric($settings['database']['data_sortable']) ? $settings['database']['data_sortable'] : TRUE,
-    '#disabled' => $has_data,
-  );
   $form['database']['data_index'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Indexed (adds a simple DB index on on the computed values)'),
+    '#title' => t('Index computed values in the database (Does not apply to text or longtext fields.)'),
     '#default_value' => is_numeric($settings['database']['data_index']) ? $settings['database']['data_index'] : FALSE,
     '#disabled' => $has_data,
   );
