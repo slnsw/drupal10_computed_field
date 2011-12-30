@@ -44,7 +44,7 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
     '#type' => 'textarea',
     '#rows' => 15,
     '#title' => t('Computed Code (PHP)'),
-    '#description' => t('Some variables available to your code include: <code>@fields</code>. To set the value of the field, set <code>@entity_field</code>.  For multi-value computed fields continue with <code>@entity_field_multi</code>.  Here\'s a simple example which sets the computed field\'s value to the value of the sum of the number fields (<code>@field_a</code> and <code>@field_b</code>) in a node entity:<p><code>@example</code><p>Alternately, this code can be supplied by your own custom function named: <code>@compute_func()</code>', 
+    '#description' => t('Some variables available to your code include: <code>@fields</code>. To set the value of the field, set <code>@entity_field</code>.  For multi-value computed fields continue with <code>@entity_field_multi</code>.  Here\'s a simple example which sets the computed field\'s value to the value of the sum of the number fields (<code>@field_a</code> and <code>@field_b</code>) in a node entity:<p><code>@example</code><p>Alternately, this code can be supplied by your own custom function named: <code>@compute_func(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items)</code>',
       array('@fields' => '$entity, $entity_type, $entity_lang, &$entity_field and $langcode',
         '@entity_field' => '$entity_field[0][\'value\']',
         '@entity_field_multi' => '$entity_field[1][\'value\']',
