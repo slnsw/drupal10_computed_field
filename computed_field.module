@@ -346,7 +346,7 @@ function computed_field_field_is_empty($item, $field) {
 }
 
 /**
- * Implements hook_tokens().
+ * Implements hook_token_info().
  */
 function computed_field_token_info() {
   $types['computed'] = array(
@@ -359,7 +359,6 @@ function computed_field_token_info() {
   $computed = array();
   foreach ($fields as $field_name => $field) {
     if ($field['module'] == "computed_field") {
-
       $node[str_replace('_', '-', $field_name)] = array(
         'name' => t("Computed: %field_name", array('%field_name' => $field_name)),
         'description' => t("Computed field %field_name value.", array('%field_name' => $field_name)),
@@ -371,10 +370,12 @@ function computed_field_token_info() {
       );
     }
   }
-  return array(
-    'types' => $types,
-    'tokens' => array('node' => $node, 'computed' => $computed),
-  );
+  if (!empty($computed)) {
+    return array(
+      'types' => $types,
+      'tokens' => array('node' => $node, 'computed' => $computed),
+    );
+  }
 }
 
 /**
