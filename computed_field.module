@@ -25,8 +25,33 @@ function computed_field_field_info() {
       ),
       'default_widget' => 'computed',
       'default_formatter' => 'computed_field_default',
+      // If we followed the core convention of separate fields for each data
+      // type we could make Entity API happy by just setting a property_type.
+      // Instead we have to use our own callback to determine the type then
+      // rerun theirs to setup the rest of the field properties.
+      'property_callbacks' => array('computed_field_entity_property_callback'),
     ),
   );
+}
+
+/**
+ * Callback to setup Entity API's field properties.
+ */
+function computed_field_entity_property_callback(&$info, $entity_type, $field, $instance, $field_type) {
+  $property_types = array(
+    'int' => 'integer',
+    'float' => 'decimal', 'numeric' => 'decimal',
+    'varchar' => 'text', 'text' => 'text', 'longtext' => 'text',
+  );
+  if (isset($property_types[$field['columns']['value']['type']])) {
+    // Entity API's defaults are pretty good so set the property_type and let
+    // them do the work for us.
+    $field_type['property_type'] = $property_types[$field['columns']['value']['type']];
+    entity_metadata_field_default_property_callback($info, $entity_type, $field, $instance, $field_type);
+    // The only thing is that a setter doesn't make sense, so let's disable it.
+    $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$field['field_name']];
+    unset($property['setter callback']);
+  }
 }
 
 /**
