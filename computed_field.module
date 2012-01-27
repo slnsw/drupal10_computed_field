@@ -89,7 +89,7 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
   $form['display_format'] = array(
     '#type' => 'textarea',
     '#title' => t('Display Code (PHP)'),
-    '#description' => t('This code should assign a string to the <code>@display_output</code> variable, which will be printed when the field is displayed. The raw computed value of the field is in <code>@value</code>.  <strong>Note:</strong> this code has no effect if you use the "Raw computed value" display formatter.<p> Alternately, this code can be supplied by your own custom function named: <code>@display_func()</code>', 
+    '#description' => t('This code should assign a string to the <code>@display_output</code> variable, which will be printed when the field is displayed. The raw computed value of the field is in <code>@value</code>.  <strong>Note:</strong> this code has no effect if you use the "Raw computed value" display formatter.<p> Alternately, this code can be supplied by your own custom function named: <code>@display_func($field, $entity_field_item, $entity_lang, $langcode)</code>.  Return the value to be displayed.  Original value is in $entity_field_item[\'value\'].', 
       array('@display_output' => '$display_output',
             '@value' => '$entity_field_item[\'value\']',
             '@display_func' => $display_func)),
