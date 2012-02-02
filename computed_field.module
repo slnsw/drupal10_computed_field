@@ -24,7 +24,7 @@ function computed_field_field_info() {
         ),
       ),
       'default_widget' => 'computed',
-      'default_formatter' => 'computed_field_default',
+      'default_formatter' => 'computed_field_plain',
       // If we followed the core convention of separate fields for each data
       // type we could make Entity API happy by just setting a property_type.
       // Instead we have to use our own callback to determine the type then
@@ -281,8 +281,8 @@ function computed_field_field_widget_form(&$form, &$form_state, $field, $instanc
  */
 function computed_field_field_formatter_info() {
   return array(
-    'computed_field_default' => array(
-      'label' => t('Default'),
+    'computed_field_unsanitized' => array(
+      'label' => t('Unsanitized'),
       'field types' => array('computed'),
     ),
     'computed_field_plain' => array(
@@ -294,7 +294,7 @@ function computed_field_field_formatter_info() {
       'field types' => array('computed'),
     ),
     'computed_field_computed_value' => array(
-      'label' => t('Raw computed value'),
+      'label' => t('Raw value, no display code'),
       'field types' => array('computed'),
     ),
   );
@@ -346,7 +346,7 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
     
     // Output the formatted display item
     switch ($display['type']) {
-      case 'computed_field_default':
+      case 'computed_field_unsanitized':
           $element[$delta] = array('#markup' => $display_output);
         break;
       case 'computed_field_plain':
