@@ -43,7 +43,7 @@ function computed_field_entity_property_callback(&$info, $entity_type, $field, $
     'float' => 'decimal', 'numeric' => 'decimal',
     'varchar' => 'text', 'text' => 'text', 'longtext' => 'text',
   );
-  if (isset($property_types[$field['columns']['value']['type']])) {
+  if (isset($field['columns']['value']) && isset($property_types[$field['columns']['value']['type']])) {
     // Entity API's defaults are pretty good so set the property_type and let
     // them do the work for us.
     $field_type['property_type'] = $property_types[$field['columns']['value']['type']];
