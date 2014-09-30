@@ -12,6 +12,7 @@ function computed_field_field_info() {
         'code' => '$entity_field[0][\'value\'] = "";',
         'display_format' => '$display_output = $entity_field_item[\'value\'];',
         'store' => 1,
+        'recalculate' => FALSE,
         'database' => array(
           'data_type' => 'varchar',
           'data_length' => 32,
@@ -102,6 +103,12 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
       '#markup' => t('<strong>This field is DISPLAYED using <code>@display_func()</code>.</strong>', array('@display_func' => $display_func)),
       );
   }
+  $form['recalculate'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Recalculate the field value every time.'),
+    '#description' => t('By default, Drupal will cache the value of this field even if it is not stored in the database (and even if Page Caching is disabled). This option will cause computed_field to recalculate the value every time this field is displayed. For example, a time-based calculated value may change more often than field cache is cleared. (Note that Drupal page caching will still cache the field value.)'),
+    '#default_value' => is_numeric($settings['recalculate']) ? $settings['recalculate'] : FALSE,
+  );
   $form['store'] = array(
     '#type' => 'checkbox',
     '#title' => t('Store value in the database'),
@@ -218,9 +225,10 @@ function computed_field_field_load($entity_type, $entities, $field, $instances, 
  * Implements field hook_field_prepare_view().
  */
 function computed_field_field_prepare_view($entity_type, $entities, $field, $instances, $langcode, &$items) {
+  $settings = $field['settings'];
   // Compute field values in case user is "previewing" an entity
   foreach ($entities as $etid => $entity) {
-    if (isset($entity->op) && $entity->op == 'Preview') {
+    if ((isset($entity->op) && $entity->op == 'Preview') || $settings['recalculate']) {
       _computed_field_compute_value($entity_type, $entity, $field, $instances, $langcode, $items[$etid]);
     }
   }
