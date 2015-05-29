@@ -41,8 +41,11 @@ function computed_field_field_info() {
 function computed_field_entity_property_callback(&$info, $entity_type, $field, $instance, $field_type) {
   $property_types = array(
     'int' => 'integer',
-    'float' => 'decimal', 'numeric' => 'decimal',
-    'varchar' => 'text', 'text' => 'text', 'longtext' => 'text',
+    'float' => 'decimal',
+    'numeric' => 'decimal',
+    'varchar' => 'text',
+    'text' => 'text',
+    'longtext' => 'text',
   );
   if (isset($field['columns']['value']) && isset($property_types[$field['columns']['value']['type']])) {
     // Entity API's defaults are pretty good so set the property_type and let
@@ -384,11 +387,26 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
  * Implements field hook_field_is_empty().
  */
 function computed_field_field_is_empty($item, $field) {
-  $data_type = $field['settings']['database']['data_type'];
-  if ($data_type == 'int' || $data_type == 'float') {
-    return !is_numeric($item['value']);
+  unset($empty);
+
+  // This will depend on the class of data type.
+  switch ($field['settings']['database']['data_type']) {
+
+    case 'int':
+    case 'float':
+    case 'numeric':
+      // For numbers, the field is empty if the value isn't numeric.
+      $empty = !is_numeric($item['value']);
+      break;
+
+    case 'varchar':
+    case 'text':
+    case 'longtext':
+      // For strings, the field is empty if it doesn't match the empty string.
+      $empty = ($item['value'] === "");
+      break;
   }
-  return empty($item['value']);
+  return $empty;
 }
 
 /**
