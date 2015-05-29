@@ -313,6 +313,7 @@ function computed_field_field_formatter_info() {
  */
 function computed_field_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
+  $data_to_display = FALSE;
 
   // Special case formatter that returns the raw computed values without any display code processing
   if ($display['type'] == "computed_field_computed_value") {
@@ -352,6 +353,11 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
       eval($field['settings']['display_format']);
     }
 
+    // Track if any of our items produce non-empty output.
+    if (!empty($display_output) || is_numeric($display_output)) {
+      $data_to_display = TRUE;
+    }
+
     // Output the formatted display item
     switch ($display['type']) {
       case 'computed_field_unsanitized':
@@ -364,6 +370,12 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
           $element[$delta] = array('#markup' => check_markup($display_output));
         break;
     }
+  }
+  // If all items are empty then we should not return anything. This helps
+  // ensure that empty fields are not displayed at all. This check does not
+  // apply to fields stored in the DB as those are instead checked on save.
+  if (isset($field['settings']['store']) && !$field['settings']['store'] && !$data_to_display) {
+    return;
   }
   return $element;
 }
