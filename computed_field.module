@@ -73,13 +73,16 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
     '#type' => 'textarea',
     '#rows' => 15,
     '#title' => t('Computed Code (PHP)'),
-    '#description' => t('The variables available to your code include: <code>@fields</code>. To set the value of the field, set <code>@entity_field</code>.  For multi-value computed fields continue with <code>@entity_field_multi</code>.  Here\'s a simple example which sets the computed field\'s value to the value of the sum of the number fields (<code>@field_a</code> and <code>@field_b</code>) in a node entity:<p><code>@example</code> The first pop fetches the last (or only) item from the field while the second pop fetches its <code>[\'value\']</code> contents (assuming it\'s the only key that\'s set).<p>Alternately, this code can be supplied by your own custom function named: <code>@compute_func(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items)</code>',
+    '#description' => t('<p>The variables available to your code include: <code>@fields</code>. To set the value of the field, set <code>@entity_field</code>.  For multi-value computed fields continue with <code>@entity_field_multi</code>.  Here\'s a simple example which sets the computed field\'s value to the value of the sum of the number fields (<code>@field_a</code> and <code>@field_b</code>) in a node entity:</p> !example <p>Alternately, this code can be supplied by your own custom function named: <code>@compute_func(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items)</code>.</p>',
       array('@fields' => '&$entity_field, $entity_type, $entity, $field, $instance, $langcode, and $items',
         '@entity_field' => '$entity_field[0][\'value\']',
         '@entity_field_multi' => '$entity_field[1][\'value\']',
         '@field_a' => 'field_a',
         '@field_b' => 'field_b',
-        '@example' => '$entity_field[0][\'value\'] = array_pop(array_pop(field_get_items($entity_type, $entity, \'field_a\'))) + array_pop(array_pop(field_get_items($entity_type, $entity, \'field_b\')));',
+        '!example' => '<p><code>$field_a = field_get_items($entity_type, $entity, "field_a");<br />
+  $field_b = field_get_items($entity_type, $entity, "field_b");<br />
+  $entity_field[0]["value"] = $field_a[0]["value"] + $field_b[0]["value"];</code></p>
+',
         '@compute_func' => $compute_func)),
     '#default_value' => !empty($settings['code']) ? $settings['code'] : '$entity_field[0][\'value\'] = "";',
     '#access' => !function_exists($compute_func),
