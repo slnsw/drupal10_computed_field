@@ -3,5 +3,3 @@ description = Defines a field type that allows values to be "computed" via PHP c
 core = 7.x
 dependencies[] = field
 package = Fields
-files[]=computed_field.install
-files[]=computed_field.module
