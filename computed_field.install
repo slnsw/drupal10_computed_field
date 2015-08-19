@@ -39,7 +39,7 @@ function computed_field_field_schema($field) {
       // Add 'not null' settings
       $columns['value']['not null'] = isset($settings['database']['data_not_NULL']) ? $settings['database']['data_not_NULL'] : TRUE;
       // Add default values if set
-      if ($settings['database']['data_default'] != '')  {
+      if ($settings['database']['data_default'] !== '')  {
         $columns['value']['default'] = $settings['database']['data_default'];
       }
       // Add a simple index on the data if requested (except 'text' fields)
