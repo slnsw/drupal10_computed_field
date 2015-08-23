@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Functionality for the computed field.
+ */
+
+/**
  * Implements hook_field_info().
  */
 function computed_field_field_info() {
@@ -72,17 +77,18 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
     '#type' => 'textarea',
     '#rows' => 15,
     '#title' => t('Computed Code (PHP)'),
-    '#description' => t('<p>The variables available to your code include: <code>@fields</code>. To set the value of the field, set <code>@entity_field</code>.  For multi-value computed fields continue with <code>@entity_field_multi</code>.  Here\'s a simple example which sets the computed field\'s value to the value of the sum of the number fields (<code>@field_a</code> and <code>@field_b</code>) in a node entity:</p> !example <p>Alternately, this code can be supplied by your own custom function named: <code>@compute_func(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items)</code>.</p>',
-      array('@fields' => '&$entity_field, $entity_type, $entity, $field, $instance, $langcode, and $items',
-        '@entity_field' => '$entity_field[0][\'value\']',
-        '@entity_field_multi' => '$entity_field[1][\'value\']',
-        '@field_a' => 'field_a',
-        '@field_b' => 'field_b',
-        '!example' => '<p><code>$field_a = field_get_items($entity_type, $entity, "field_a");<br />
-  $field_b = field_get_items($entity_type, $entity, "field_b");<br />
-  $entity_field[0]["value"] = $field_a[0]["value"] + $field_b[0]["value"];</code></p>
-',
-        '@compute_func' => $compute_func)),
+    '#description' => t('<p>The variables available to your code include: <code>@fields</code>. To set the value of the field, set <code>@entity_field</code>.  For multi-value computed fields continue with <code>@entity_field_multi</code>.  Here\'s a simple example which sets the computed field\'s value to the value of the sum of the number fields (<code>@field_a</code> and <code>@field_b</code>) in a node entity:</p> !example <p>Alternately, this code can be supplied by your own custom function named: <code>@compute_func(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items)</code>.</p>', array(
+      '@fields' => '&$entity_field, $entity_type, $entity, $field, $instance, $langcode, and $items',
+      '@entity_field' => '$entity_field[0][\'value\']',
+      '@entity_field_multi' => '$entity_field[1][\'value\']',
+      '@field_a' => 'field_a',
+      '@field_b' => 'field_b',
+      '!example' => '<p><code>$field_a = field_get_items($entity_type, $entity, "field_a");<br />
+        $field_b = field_get_items($entity_type, $entity, "field_b");<br />
+        $entity_field[0]["value"] = $field_a[0]["value"] + $field_b[0]["value"];</code></p>
+      ',
+      '@compute_func' => $compute_func
+    )),
     '#default_value' => !empty($settings['code']) ? $settings['code'] : '$entity_field[0][\'value\'] = "";',
     '#access' => !function_exists($compute_func),
   );
@@ -322,7 +328,9 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
   // Special case formatter that returns the raw computed values without any display code processing.
   if ($display['type'] == "computed_field_computed_value") {
     foreach ($items as $delta => $item) {
-      if (!isset($entity_field_item['value'])) $entity_field_item['value'] = NULL;
+      if (!isset($entity_field_item['value'])) {
+        $entity_field_item['value'] = NULL;
+      }
       $element[$delta] = array('#markup' => $item['value']);
     }
     return $element;
@@ -331,8 +339,7 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
   // Other display formatters which run through display code processing.
   // Check if the value is to be formatted by a display function outside the DB.
   $display_func = 'computed_field_' . $field['field_name'] . '_display';
-  if (function_exists($display_func)) $display_in_code = TRUE;
-  else $display_in_code = FALSE;
+  $display_in_code = function_exists($display_func) ? TRUE : FALSE;
 
   // Loop the items to display.
   foreach ($items as $delta => $item) {
@@ -341,12 +348,18 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
     $entity_field_item = $item;
 
     // Setup a variable with the entity language if available.
-    if (isset($entity->language)) $entity_lang = $entity->language;
-    else $entity_lang = LANGUAGE_NONE;
+    if (isset($entity->language)) {
+      $entity_lang = $entity->language;
+    }
+    else {
+      $entity_lang = LANGUAGE_NONE;
+    }
 
     // If there are value "holes" in the field array let's set the value to NULL.
     // to avoid undefined index errors in typical PHP display code.
-    if (!isset($entity_field_item['value'])) $entity_field_item['value'] = NULL;
+    if (!isset($entity_field_item['value'])) {
+      $entity_field_item['value'] = NULL;
+    }
 
     // Execute the display code.
     $display_output = NULL;
@@ -420,8 +433,12 @@ function _computed_field_compute_value($entity_type, $entity, $field, $instance,
   $entity_field =& $items;
 
   // Setup a variable with the entity language if available.
-  if (isset($entity->language)) $entity_lang = $entity->language;
-  else $entity_lang = LANGUAGE_NONE;
+  if (isset($entity->language)) {
+    $entity_lang = $entity->language;
+  }
+  else {
+    $entity_lang = LANGUAGE_NONE;
+  }
 
   // Allow the value to be computed from code not stored in DB.
   $compute_func = 'computed_field_' . $field['field_name'] . '_compute';
