@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implements field hook_field_info().
+ * Implements hook_field_info().
  */
 function computed_field_field_info() {
   return array(
@@ -48,8 +48,7 @@ function computed_field_entity_property_callback(&$info, $entity_type, $field, $
     'longtext' => 'text',
   );
   if (isset($field['columns']['value']) && isset($property_types[$field['columns']['value']['type']])) {
-    // Entity API's defaults are pretty good so set the property_type and let
-    // them do the work for us.
+    // Entity API's defaults are pretty good so set the property_type and let them do the work for us.
     $field_type['property_type'] = $property_types[$field['columns']['value']['type']];
     entity_metadata_field_default_property_callback($info, $entity_type, $field, $instance, $field_type);
     // The only thing is that a setter doesn't make sense, so let's disable it.
@@ -59,7 +58,7 @@ function computed_field_entity_property_callback(&$info, $entity_type, $field, $
 }
 
 /**
- * Implements of hook_field_settings_form().
+ * Implements hook_field_settings_form().
  */
 function computed_field_field_settings_form($field, $instance, $has_data) {
   $form = array();
@@ -197,8 +196,8 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
 }
 
 /**
-* Implements the #element_validate callback for computed_field_field_settings_form().
-*/
+ * #element_validate callback for computed_field_field_settings_form().
+ */
 function computed_field_field_settings_form_validate($element, &$form_state) {
   $settings = $form_state['values']['field']['settings'];
   if ($settings['store']) {
@@ -215,11 +214,11 @@ function computed_field_field_settings_form_validate($element, &$form_state) {
 }
 
 /**
- * Implements field hook_field_load().
+ * Implements hook_field_load().
  */
 function computed_field_field_load($entity_type, $entities, $field, $instances, $langcode, &$items, $age) {
   $settings = $field['settings'];
-  // Compute field values on load if they aren't stored in the database
+  // Compute field values on load if they aren't stored in the database.
   if (!$settings['store']) {
     foreach ($entities as $etid => $entity) {
       _computed_field_compute_value($entity_type, $entity, $field, $instances, $langcode, $items[$etid]);
@@ -228,11 +227,11 @@ function computed_field_field_load($entity_type, $entities, $field, $instances, 
 }
 
 /**
- * Implements field hook_field_prepare_view().
+ * Implements hook_field_prepare_view().
  */
 function computed_field_field_prepare_view($entity_type, $entities, $field, $instances, $langcode, &$items) {
   $settings = $field['settings'];
-  // Compute field values in case user is "previewing" an entity
+  // Compute field values in case user is "previewing" an entity.
   foreach ($entities as $etid => $entity) {
     if ((isset($entity->op) && $entity->op == 'Preview') || $settings['recalculate']) {
       _computed_field_compute_value($entity_type, $entity, $field, $instances, $langcode, $items[$etid]);
@@ -241,21 +240,21 @@ function computed_field_field_prepare_view($entity_type, $entities, $field, $ins
 }
 
 /**
- * Implements field hook_field_insert().
+ * Implements hook_field_insert().
  */
 function computed_field_field_insert($entity_type, $entity, $field, $instance, $langcode, &$items) {
   _computed_field_compute_value($entity_type, $entity, $field, $instance, $langcode, $items);
 }
 
 /**
- * Implements field hook_field_update().
+ * Implements hook_field_update().
  */
 function computed_field_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
   _computed_field_compute_value($entity_type, $entity, $field, $instance, $langcode, $items);
 }
 
 /**
- * Implements field hook_field_widget_info().
+ * Implements hook_field_widget_info().
  */
 function computed_field_field_widget_info() {
   return array(
@@ -271,13 +270,12 @@ function computed_field_field_widget_info() {
 }
 
 /**
- * Implements field hook_field_widget_form().
+ * Implements hook_field_widget_form().
  */
-
 function computed_field_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
 
   // If there are no items yet, add a null item value to avoid
-  // preview errors when selecting a different language
+  // preview errors when selecting a different language.
   if (empty($items)) $items[0]['value'] = NULL;
 
   foreach ($items as $item_delta => $item) {
@@ -321,7 +319,7 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
   $element = array();
   $data_to_display = FALSE;
 
-  // Special case formatter that returns the raw computed values without any display code processing
+  // Special case formatter that returns the raw computed values without any display code processing.
   if ($display['type'] == "computed_field_computed_value") {
     foreach ($items as $delta => $item) {
       if (!isset($entity_field_item['value'])) $entity_field_item['value'] = NULL;
@@ -330,27 +328,27 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
     return $element;
   }
 
-  // Other display formatters which run through display code processing
-  // Check if the value is to be formatted by a display function outside the DB
+  // Other display formatters which run through display code processing.
+  // Check if the value is to be formatted by a display function outside the DB.
   $display_func = 'computed_field_' . $field['field_name'] . '_display';
   if (function_exists($display_func)) $display_in_code = TRUE;
   else $display_in_code = FALSE;
 
-  // Loop the items to display
+  // Loop the items to display.
   foreach ($items as $delta => $item) {
 
-    // For "some" backwards compatibility
+    // For "some" backwards compatibility.
     $entity_field_item = $item;
 
-    // Setup a variable with the entity language if available
+    // Setup a variable with the entity language if available.
     if (isset($entity->language)) $entity_lang = $entity->language;
     else $entity_lang = LANGUAGE_NONE;
 
-    // If there are value "holes" in the field array let's set the value to NULL
-    // to avoid undefined index errors in typical PHP display code
+    // If there are value "holes" in the field array let's set the value to NULL.
+    // to avoid undefined index errors in typical PHP display code.
     if (!isset($entity_field_item['value'])) $entity_field_item['value'] = NULL;
 
-    // Execute the display code
+    // Execute the display code.
     $display_output = NULL;
     if ($display_in_code) {
       $display_output = $display_func($field, $entity_field_item, $entity_lang, $langcode, $entity);
@@ -364,7 +362,7 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
       $data_to_display = TRUE;
     }
 
-    // Output the formatted display item
+    // Output the formatted display item.
     switch ($display['type']) {
       case 'computed_field_unsanitized':
           $element[$delta] = array('#markup' => $display_output);
@@ -387,7 +385,7 @@ function computed_field_field_formatter_view($entity_type, $entity, $field, $ins
 }
 
 /**
- * Implements field hook_field_is_empty().
+ * Implements hook_field_is_empty().
  */
 function computed_field_field_is_empty($item, $field) {
   unset($empty);
@@ -418,14 +416,14 @@ function computed_field_field_is_empty($item, $field) {
 function _computed_field_compute_value($entity_type, $entity, $field, $instance, $langcode, &$items) {
   $settings = $field['settings'];
 
-  // Setup a variable with the field values
+  // Setup a variable with the field values.
   $entity_field =& $items;
 
-  // Setup a variable with the entity language if available
+  // Setup a variable with the entity language if available.
   if (isset($entity->language)) $entity_lang = $entity->language;
   else $entity_lang = LANGUAGE_NONE;
 
-  // Allow the value to be computed from code not stored in DB
+  // Allow the value to be computed from code not stored in DB.
   $compute_func = 'computed_field_' . $field['field_name'] . '_compute';
   if (function_exists($compute_func)) {
     $compute_func($entity_field, $entity_type, $entity, $field, $instance, $langcode, $items);
@@ -436,4 +434,3 @@ function _computed_field_compute_value($entity_type, $entity, $field, $instance,
     }
   }
 }
-
