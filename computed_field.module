@@ -94,8 +94,8 @@ function computed_field_field_settings_form($field, $instance, $has_data) {
   );
   if (function_exists($compute_func)) {
     $form['compute_func'] = array(
-    '#type' => 'item',
-    '#markup' => t('<strong>This field is COMPUTED using <code>@compute_func()</code>.</strong>', array('@compute_func' => $compute_func)),
+      '#type' => 'item',
+      '#markup' => t('<strong>This field is COMPUTED using <code>@compute_func()</code>.</strong>', array('@compute_func' => $compute_func)),
     );
   }
   $form['display_format'] = array(
