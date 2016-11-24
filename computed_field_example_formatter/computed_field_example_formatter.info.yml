@@ -1,0 +1,9 @@
+name: Computed Field Example Formatter
+type: module
+description: Provides an example PHP formatter for computed fields where the code is implemented inside the module.
+core: 8.x
+package: Field types
+dependencies:
+  - computed_field
+
+hidden: true

@@ -1,0 +1,7 @@
+name: Computed Field PHP Formatter
+type: module
+description: Defines a PHP formatter type that allows values to be "computed" via PHP code.
+core: 8.x
+package: Field types
+dependencies:
+  - computed_field
