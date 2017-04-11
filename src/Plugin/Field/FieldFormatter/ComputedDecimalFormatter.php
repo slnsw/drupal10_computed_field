@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\computed_field\Plugin\Field\FieldFormatter\ComputedDecimalFormatter.
- */
-
 namespace Drupal\computed_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\DecimalFormatter;

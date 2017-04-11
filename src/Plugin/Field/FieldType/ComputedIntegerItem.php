@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\computed_field\Plugin\Field\FieldType\ComputedIntegerItem.
- */
-
 namespace Drupal\computed_field\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldDefinitionInterface;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Field\Plugin\Field\FieldFormatter\ComputedNumericUnformattedFormatter.
- */
-
 namespace Drupal\computed_field\Plugin\Field\FieldFormatter;
 
 /**

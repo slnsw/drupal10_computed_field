@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\computed_field\Plugin\Field\FieldFormatter\ComputedCacheFormatterTrait.
- */
-
 namespace Drupal\computed_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Form\FormStateInterface;

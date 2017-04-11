@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\field_expression\Plugin\Field\FieldWidget\ComputedWidgetBase.
- */
-
 namespace Drupal\computed_field\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;

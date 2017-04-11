@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\computed_field\Plugin\Field\FieldFormatter\ComputedStringFormatter.
- */
-
 namespace Drupal\computed_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\Html;
