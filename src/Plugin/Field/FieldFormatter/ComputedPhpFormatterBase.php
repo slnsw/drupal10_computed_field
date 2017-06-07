@@ -16,7 +16,7 @@ abstract class ComputedPhpFormatterBase extends ComputedStringFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode = NULL) {
     $cache_duration = $this->getSetting('cache_duration');
     $cache_unit = $this->getSetting('cache_unit');
-    $elements = array();
+    $elements = [];
 
     foreach ($items as $delta => $item) {
       if ($cache_unit < 0) {

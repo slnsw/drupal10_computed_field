@@ -50,10 +50,10 @@ trait ComputedCacheFormatterTrait {
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
       'cache_unit' => -1,
       'cache_duration' => 1,
-    ) + parent::defaultSettings();
+    ] + parent::defaultSettings();
   }
 
 
