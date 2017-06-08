@@ -37,7 +37,6 @@ trait ComputedFieldItemTrait {
     $code = $this->getSettings()['code'];
 
     // Make these variables available to users for use in their code.
-    $entity_manager = \Drupal::EntityManager();
     $entity_type_manager = \Drupal::EntityTypeManager();
     $entity = $this->getEntity();
     $fields = $entity->toArray();
@@ -65,7 +64,6 @@ trait ComputedFieldItemTrait {
 <li><code>$value</code>: the resulting value (to be set in this code),</li>
 <li><code>$fields</code>: the list of fields available in this entity,</li>
 <li><code>$entity</code>: the entity the field belongs to,</li>
-<li><code>$entity_manager</code>: the entity manager service (<em>deprecated!</em>),</li>
 <li><code>$entity_type_manager</code>: the entity type manager,</li>
 <li><code>$delta</code>: current index of the field in case of multi-value computed fields (counting from 0).</li>
 </ul>
