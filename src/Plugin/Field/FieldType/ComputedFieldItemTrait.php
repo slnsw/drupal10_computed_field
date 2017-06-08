@@ -36,14 +36,19 @@ trait ComputedFieldItemTrait {
   public function executeCode() {
     $code = $this->getSettings()['code'];
 
-    // Make these variables available to users for use in their code.
     $entity_type_manager = \Drupal::EntityTypeManager();
     $entity = $this->getEntity();
     $fields = $entity->toArray();
     $delta = $this->name;
 
-    $value = NULL;
-    eval($code);
+    if ($this->computeFunctionNameExists()) {
+      $compute_function = $this->getComputeFunctionName();
+      $value = $compute_function($entity_type_manager, $entity, $fields, $delta);
+    }
+    else {
+      $value = NULL;
+      eval($code);
+    }
     return $value;
   }
 
@@ -59,18 +64,53 @@ trait ComputedFieldItemTrait {
       '#title' => $this->t('Code (PHP) to compute the value'),
       '#default_value' => $settings['code'],
       '#required' => TRUE,
-      '#description' => t('The variables available to your code include:
+      '#disabled' => $this->computeFunctionNameExists(),
+      '#description' => t('
+<p>
+  <em><strong>Warning:</strong> We strongly recommend that code be provided by a
+  hook implementation in one of your custom modules, not here. This is far more
+  secure than allowing code to be entered into this form from the Web UI. In
+  addition, any code saved here will be stored in the database instead of your
+  revision control system, which probably is not what you want. The hook
+  implementation should be named <strong>%function</strong>, and the desired
+  value should be returned. If/when it exists, this form element will be greyed
+  out.</em>
+</p>
+<p>The variables available to your code include:</p>
 <ul>
-<li><code>$value</code>: the resulting value (to be set in this code),</li>
-<li><code>$fields</code>: the list of fields available in this entity,</li>
-<li><code>$entity</code>: the entity the field belongs to,</li>
-<li><code>$entity_type_manager</code>: the entity type manager,</li>
-<li><code>$delta</code>: current index of the field in case of multi-value computed fields (counting from 0).</li>
+  <li><code>$value</code>: the resulting value (to be set in this code),</li>
+  <li><code>$fields</code>: the list of fields available in this entity,</li>
+  <li><code>$entity</code>: the entity the field belongs to,</li>
+  <li><code>$entity_type_manager</code>: the entity type manager,</li>
+  <li><code>$delta</code>: current index of the field in case of multi-value computed fields (counting from 0).</li>
 </ul>
-      '),
+      ', [
+        '%function' => $this->getComputeFunctionName(),
+      ]),
     ];
 
     return $element;
+  }
+
+  /**
+   * Fetches this field's compute function name for implementing elsewhere.
+   *
+   * @return string
+   *   The function name.
+   */
+  protected function getComputeFunctionName() {
+    $field_name = $this->definition->getFieldDefinition()->getName();
+    return 'computed_field_' . $field_name . '_compute';
+  }
+
+  /**
+   * Determines if a compute function exists for this field.
+   *
+   * @return string
+   *   The function name.
+   */
+  protected function computeFunctionNameExists() {
+    return function_exists($this->getComputeFunctionName());
   }
 
 }
