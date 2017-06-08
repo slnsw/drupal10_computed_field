@@ -29,13 +29,20 @@ abstract class ComputedStringItemBase extends StringItemBase {
     $element = $this->getFieldSettingsFormBase($form, $form_state);
 
     $element['code']['#title'] = $this->t('Code (PHP) to compute the <em>text</em> value');
-    $element['code']['#description'] .= '<p>'
-      . t('Here\'s a simple example using the <code>$entity</code>-array which sets the computed field\'s value to the concatenation of fields (<code>field_a</code> and <code>field_b</code>) in an entity:')
-      . '<ul><li><code>$value = $entity->field_a->value . $entity->field_b->value;</code></li></ul>'
-      . '<p>'
-      . t('An alternative example using the <code>$fields</code>-array:')
-      . '<ul><li><code>$value = $fields[\'field_a\'][0][\'value\'] . $fields[\'field_b\'][0][\'value\'];</code></li></ul>'
-      . '</p>';
+    $element['code']['#description'] .= t('
+<p>
+  Here\'s a simple example using the <code>$entity</code>-array which sets the computed field\'s value to the concatenation of fields (<code>field_a</code> and <code>field_b</code>) in an entity:
+  <ul>
+    <li><code>$value = $entity->field_a->value . $entity->field_b->value;</code></li>
+  </ul>
+</p>
+<p>
+  An alternative example using the <code>$fields</code>-array:
+  <ul>
+    <li><code>$value = $fields[\'field_a\'][0][\'value\'] . $fields[\'field_b\'][0][\'value\'];</code></li>
+  </ul>
+</p>
+    ');
     return $element;
   }
 
