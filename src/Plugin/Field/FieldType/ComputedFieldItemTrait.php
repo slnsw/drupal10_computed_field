@@ -67,22 +67,23 @@ trait ComputedFieldItemTrait {
       '#disabled' => $this->computeFunctionNameExists(),
       '#description' => t('
 <p>
-  <em><strong>Warning:</strong> We strongly recommend that code be provided by a
+  <em><strong>WARNING:</strong> We strongly recommend that code be provided by a
   hook implementation in one of your custom modules, not here. This is far more
   secure than allowing code to be entered into this form from the Web UI. In
   addition, any code saved here will be stored in the database instead of your
   revision control system, which probably is not what you want. The hook
-  implementation should be named <strong>%function</strong>, and the desired
-  value should be returned. If/when it exists, this form element will be greyed
-  out.</em>
+  implementation function signature should be
+  <strong>%function($entity_type_manager, $entity, $fields, $delta)</strong>,
+  and the desired value should be returned. If/when it exists, this form element
+  will be greyed out.</em>
 </p>
 <p>The variables available to your code include:</p>
 <ul>
-  <li><code>$value</code>: the resulting value (to be set in this code),</li>
-  <li><code>$fields</code>: the list of fields available in this entity,</li>
-  <li><code>$entity</code>: the entity the field belongs to,</li>
-  <li><code>$entity_type_manager</code>: the entity type manager,</li>
-  <li><code>$delta</code>: current index of the field in case of multi-value computed fields (counting from 0).</li>
+  <li><code>$entity_type_manager</code>: The entity type manager.</li>
+  <li><code>$entity</code>: The entity the field belongs to.</li>
+  <li><code>$fields</code>: The list of fields available in this entity.</li>
+  <li><code>$delta</code>: Current index of the field in case of multi-value computed fields (counting from 0).</li>
+  <li><code>$value</code>: The resulting value to be set above, or returned in your hook implementation).</li>
 </ul>
       ', [
         '%function' => $this->getComputeFunctionName(),
