@@ -42,6 +42,9 @@ abstract class ComputedStringItemBase extends StringItemBase {
     <li><code>$value = $fields[\'field_a\'][0][\'value\'] . $fields[\'field_b\'][0][\'value\'];</code></li>
   </ul>
 </p>
+<p>
+  For information on working with multi-valued fields, read the documentation page at <a href="https://www.drupal.org/node/249907">Working with multiple values</a>.
+</p>
     ');
     return $element;
   }
