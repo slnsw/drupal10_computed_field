@@ -22,6 +22,7 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class ComputedDecimalItem extends ComputedFieldItemBase {
+  use ComputedFieldStronglyTypedItemTrait;
 
   /**
    * {@inheritdoc}

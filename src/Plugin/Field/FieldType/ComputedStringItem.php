@@ -18,6 +18,7 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class ComputedStringItem extends ComputedStringItemBase {
+  use ComputedFieldStronglyTypedItemTrait;
 
   /**
    * {@inheritdoc}
@@ -68,7 +69,7 @@ class ComputedStringItem extends ComputedStringItemBase {
   }
 
   /**
-   * This function does the computation of the field value.
+   * {@inheritdoc}
    *
    * @return string
    *   The string.

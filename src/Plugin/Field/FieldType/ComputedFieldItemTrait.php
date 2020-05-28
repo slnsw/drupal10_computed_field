@@ -19,7 +19,20 @@ trait ComputedFieldItemTrait {
    * {@inheritdoc}
    */
   public function isEmpty() {
+    $value = $this->getRawResult();
+    if (($value === NULL) || $value === '') {
+      return TRUE;
+    }
     return FALSE;
+  }
+
+  /**
+   * Fetches the raw result of the computation.
+   *
+   * @return mixed
+   */
+  protected function getRawResult() {
+    return $this->executeCode();
   }
 
   /**
@@ -32,6 +45,11 @@ trait ComputedFieldItemTrait {
 
   /**
    * Performs the field value computation.
+   *
+   * If this method is being overridden to return a typed result, the class must
+   * use ComputedFieldStronglyTypedItemTrait to ensure access to raw results.
+   *
+   * @see ComputedFieldStronglyTypedItemTrait
    */
   public function executeCode() {
     $entity = $this->getEntity();

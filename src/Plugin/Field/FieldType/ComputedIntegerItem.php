@@ -21,6 +21,7 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class ComputedIntegerItem extends ComputedFieldItemBase {
+  use ComputedFieldStronglyTypedItemTrait;
 
   /**
    * {@inheritdoc}
