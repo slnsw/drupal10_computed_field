@@ -1,7 +1,7 @@
 # Computed field
 ## Description
 This is a complete rewrite of the former computed field module to separate field types more precisely.
-It now provides five field types, whose values are computed by PHP-code you provide in the field settings.
+It now provides five field types, whose values are computed by PHP-code you provide via hook functions.
  
  * **Computed decimal**. A numeric field type with precision and scale, and optional prefix and suffix.
  * **Computed float**. Another numeric field type with optional prefix and suffix.
@@ -28,21 +28,23 @@ All these formatters allow to set cache duration. By default, cache settings are
 * Go to the tab "Manage form display" and at least save the form. This is **necessary**, even if you don't change anything else!
 * If there is currently no content of that bundle, you can safely move the computed fields to the *Disabled* area. But if there is content, don't do that otherwise the computed values for existing content would not be created. Normally the fields are not displayed in the form unless you have defined the computed field as *multiple*. Then an (almost) empty table with drag options appears. This seems to be "normal" Drupal behaviour. You can solve this only by moving the computed field to the *Disabled* area with the implications above.
 * Go to the tab "Manage display" and drag the field into the correct order. Then you can select and configure the formatter. **Don't forget to hit the *Save* button to store your changes** otherwise they are lost.
-* It's always a good idea to **rebuild the cache** if you are playing around with the computed fields. 
+* It's always a good idea to **rebuild the cache** if you are playing around with the computed fields.
+
+# Legacy: Where did the UI field for PHP-code go?
+
+The option to enter PHP-code via the UI was removed for security reasons. See https://www.drupal.org/project/computed_field/issues/3143854 for the discussion.
 
 ## Additional modules
 There are two additional modules you could enable:
 ### Computed field example formatter
 This module provides an example to create your own PHP formatter for a computed field. To do so see below.
-### Computed field PHP formatter
-This module provides the ability to define the formatter code on the fly everywhere a formatter can be specified (this is also true for views!). As this can be dangerous, especially if users can define their own views, activate this module only if really needed. It is almost better to define the formatter in a separate module than on the fly!
 
 ## Examples
 ### See the difference between cache *default* and cache *off* or *duration*
 To see the effects of caching you can follow this little example:
 
 * Add two computed integers to the bundle.
-* In both field set the PHP code to "`$value = time();`".
+* For both field create a hook function with PHP code like "`$value = time();`".
 * Go to *Manage form display* and hit *Save*.
 * Go to *Manage display* and set caching in one of the field to *off* or a certain duration. Leave the other field as is! Hit *Save* again.
 * Add content or view existing content for that bundle.
