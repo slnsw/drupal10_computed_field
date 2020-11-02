@@ -78,13 +78,6 @@ class ComputedDecimalItem extends ComputedFieldItemBase {
    */
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
     $element = parent::fieldSettingsForm($form, $form_state);
-    $settings = $this->getSettings();
-
-    $element['code']['#title'] = $this->t('Code (PHP) to compute the <em>decimal</em> value');
-    $element['code']['#description'] .= '<p>'
-        . t('The value will be rounded to @scale decimals.', ['@scale' => $settings['scale']])
-        . '</p>';
-
     return $element;
   }
 

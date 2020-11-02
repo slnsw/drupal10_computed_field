@@ -1,0 +1,4 @@
+services:
+  computed_field.helpers:
+    class: Drupal\computed_field\ComputedFieldHelpers
+    arguments: ['@entity_type.manager', '@module_handler']

@@ -76,20 +76,6 @@ class ComputedIntegerItem extends ComputedFieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
-    $element = parent::fieldSettingsForm($form, $form_state);
-
-    $element['code']['#title'] = $this->t('Code (PHP) to compute the <em>integer</em> value');
-    $element['code']['#description'] .= '<p>'
-        . t('The value will be rounded to an integer value.')
-        . '</p>';
-
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
     return [];
   }
