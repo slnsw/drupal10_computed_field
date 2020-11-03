@@ -67,3 +67,7 @@ To create you own PHP formatter, clone the provided `computed_field_example_form
 1. In the annotations section *@FieldFormatter* change *id* and *label* to your needs.
 1. Modify the body of the method *formatItem* as needed.
 1. Install your module, or rebuild the cache to let drupal read in the annotations, if your module is already installed.
+
+## More information
+
+If you'd like more information, see the [Drupal.org documentation](https://www.drupal.org/node/126522).
