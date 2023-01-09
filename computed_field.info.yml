@@ -1,5 +1,5 @@
 name: Computed Field
 type: module
 description: Defines a field type that allows values to be "computed" via PHP code.
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
 package: Field types
