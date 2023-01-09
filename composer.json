@@ -1,0 +1,18 @@
+{
+    "name": "drupal/computed_field",
+    "description": "Defines a field type that allows values to be \"computed\" via PHP code.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://www.drupal.org/project/computed_field",
+    "authors": [
+        {
+            "name": "See all contributors",
+            "homepage": "https://www.drupal.org/node/74767/committers"
+        }
+    ],
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/computed_field",
+        "source": "git://git.drupalcode.org/project/computed_field.git"
+    },
+    "require": {}
+}
